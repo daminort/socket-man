@@ -1,10 +1,14 @@
+require('dotenv').config();
+
 const path = require('path');
 const express = require('express');
+const ip = require('ip');
 
 const app = express();
-const port = 5100;
+const port = process.env.APP_PORT || 5100;
+const localURL = ip.address();
 
-var http = require('http').createServer(app);
+const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'public', 'index.html')));
@@ -16,4 +20,8 @@ io.on('connection', function(socket){
 	});
 });
 
-app.listen(port, () => console.log(`Socket server listening on port ${port}!`));
+http.listen(port);
+
+console.log('Socket server has been started:');
+console.log(`  -- Local:   https://localhost:${port}`);
+console.log(`  -- Network: https://${localURL}:${port}`);

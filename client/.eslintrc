@@ -4,10 +4,6 @@
     "node": true,
     "browser": true
   },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "sourceType": "module"
-  },
   "extends": "airbnb",
 
   "rules": {
@@ -20,7 +16,6 @@
     "function-paren-newline":"error",
     "no-lonely-if":"error",
     "guard-for-in":"error",
-    "space-before-function-paren":"error",
     "no-extra-boolean-cast":"error",
     "jsx-quotes":"error",
     "comma-spacing":"error",
@@ -44,26 +39,27 @@
     "space-unary-ops":"error",
     "no-irregular-whitespace":"error",
 
-    "no-tabs":"warn",
+    "no-tabs":"off",
+    "space-before-function-paren":"off",
     "key-spacing":"warn",
-    "indent":"warn",
+    "indent":"off",
     "object-curly-newline":"warn",
     "no-multi-spaces":"warn",
     "padded-blocks":"warn",
     "spaced-comment":"warn",
     "no-confusing-arrow":"warn",
     "arrow-body-style":"warn",
-    "arrow-parens":"warn",
+    "arrow-parens":"off",
     "space-in-parens":"warn",
     "no-console":"off",
-    "no-plusplus":"warn",
+    "no-plusplus":"off",
     "no-underscore-dangle":"warn",
     "class-methods-use-this":"warn",
     "max-len":"warn",
     "no-use-before-define":"off",
     "quote-props":"warn",
-    "no-shadow":"warn",
-    "func-names":"warn",
+    "no-shadow":"off",
+    "func-names":"off",
     "no-param-reassign":"off",
     "object-property-newline":"warn",
     
@@ -127,7 +123,7 @@
 
     "react/jsx-filename-extension":"off",
     "react/prefer-stateless-function":"off",
-    "react/jsx-indent":"warn",
+    "react/jsx-indent":"off",
     "react/jsx-indent-props":"warn",
     "react/jsx-one-expression-per-line":"off",
     "react/no-this-in-sfc":"warn",

@@ -1,0 +1,3 @@
+# Client
+/client/src/serviceWorker.js
+/client/src/redux/store.js
