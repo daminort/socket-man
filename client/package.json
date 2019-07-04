@@ -1,0 +1,60 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "description": "Client for Socket-Man",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daminort/socket-man.git"
+  },
+  "keywords": [
+    "socket",
+    "testing",
+    "socket.io"
+  ],
+  "author": "Demien",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daminort/socket-man/issues"
+  },
+  "homepage": "https://github.com/daminort/socket-man#readme",
+  "scripts": {
+    "start": "PORT=5200 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "pre-commit": "npx eslint --fix src/",
+    "pre-push": "npx eslint src/"
+  },
+  "dependencies": {
+    "antd": "^3.20.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1",
+    "redux-saga": "^1.0.5",
+    "redux-socket.io": "^1.4.0",
+    "reselect": "^4.0.0",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2",
+    "prettier": "^1.18.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

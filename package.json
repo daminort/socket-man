@@ -1,13 +1,8 @@
 {
-  "name": "server",
+  "name": "socket-man",
   "version": "0.1.0",
-  "description": "Server for Socket-Man",
+  "description": "Socket-Man: a socket testing tool like Postman for REST",
   "private": true,
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/daminort/socket-man.git"
@@ -23,8 +18,14 @@
     "url": "https://github.com/daminort/socket-man/issues"
   },
   "homepage": "https://github.com/daminort/socket-man#readme",
-  "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^2.2.0"
+  "devDependencies": {
+    "husky": "^3.0.0",
+    "lerna": "^3.15.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lerna run pre-commit",
+      "pre-push": "lerna run pre-push"
+    }
   }
 }
