@@ -5,7 +5,15 @@ import { connect } from 'react-redux';
 import appActions from '../../redux/app/actions';
 import { selectApp } from '../../redux/app/selectors';
 
+import { Layout, Row, Col } from '../../components/lib';
+import { MainContent, MainLayout } from '../../components/layouts';
+import { Header } from '../../containers/Header';
+import { Footer } from '../../containers/Footer';
+import { Sidebar } from '../../containers/Sidebar';
+import { HistoryContainer } from '../../containers/History';
+
 class Root extends PureComponent {
+
 	static propTypes = {
 		appStarted: PropTypes.bool.isRequired,
 		appStart: PropTypes.func.isRequired,
@@ -19,10 +27,24 @@ class Root extends PureComponent {
 	render() {
 		const { appStarted } = this.props;
 		if (!appStarted) {
-			return <div />;
+			return <MainLayout />;
 		}
 
-		return <div>Socket-Man</div>;
+		return (
+			<MainLayout>
+				<Sidebar />
+				<Layout>
+					<Header />
+					<MainContent>
+						<Row>
+							<Col span={12}></Col>
+							<Col span={12}><HistoryContainer /></Col>
+						</Row>
+					</MainContent>
+					<Footer />
+				</Layout>
+			</MainLayout>
+		);
 	}
 }
 

@@ -3,12 +3,13 @@ import createSocketIoMiddleware from 'redux-socket.io';
 import { createStore, applyMiddleware, compose } from 'redux';
 
 import socket from '../socket-io';
+import { subscribeOnSocketStatus } from '../socket-io/subscribe';
 
 import reducers from './reducers';
 import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
-const socketMiddleware = createSocketIoMiddleware(socket, 'Socket/Server/');
+const socketMiddleware = createSocketIoMiddleware(socket, 'Socket/Client/');
 
 const middlewares = [sagaMiddleware, socketMiddleware];
 
@@ -24,4 +25,8 @@ const store = createStore(reducers, composeEnhancers(applyMiddleware(...middlewa
 
 sagaMiddleware.run(rootSaga);
 
-export { store };
+subscribeOnSocketStatus(socket, store);
+
+export {
+	store,
+};

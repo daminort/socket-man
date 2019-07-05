@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import Root from './containers/Root';
 import { store } from './redux/store';
+import './index.css';
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(

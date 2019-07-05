@@ -29,3 +29,4 @@ class CommonUtils {
 }
 
 export default CommonUtils;
+export { CommonUtils };

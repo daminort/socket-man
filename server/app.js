@@ -4,6 +4,9 @@ const path = require('path');
 const express = require('express');
 const ip = require('ip');
 
+const { actions } = require('./constants/actions');
+const { log } = require('./helpers/logUtils');
+
 const app = express();
 const port = process.env.APP_PORT || 5100;
 const localURL = ip.address();
@@ -13,11 +16,19 @@ const io = require('socket.io')(http);
 
 app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'public', 'index.html')));
 
-io.on('connection', function(socket){
-	console.log('a user connected');
-	socket.on('disconnect', function(){
-		console.log('user disconnected');
+io.on('connection', (socket) => {
+	log('User has connected', 'green');
+
+	socket.emit('action', actions.socketStatus(true));
+
+	socket.on('disconnect', () => {
+		log('User has disconnected', 'red');
 	});
+
+	setInterval(() => {
+		socket.emit('action', actions.ping());
+		log('Ping client', 'yellow');
+	}, 10000);
 });
 
 http.listen(port);
