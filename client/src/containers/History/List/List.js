@@ -2,16 +2,15 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectMessages } from '../../../redux/history/selectors';
+import { selectFilteredMessages } from '../../../redux/history/selectors';
 
+import Message from './Message';
 import { Wrapper } from './List.style';
 
 const List = ({ messages }) => {
 
-	const items = messages.map(message => (
-		<div className="message" key={message.id}>
-			{message.message}
-		</div>
+	const items = messages.map(({ id }) => (
+		<Message id={id} key={id} />
 	));
 
 	return (
@@ -32,7 +31,7 @@ List.defaultProps = {
 const mapState = (state) => {
 
 	return {
-		messages: selectMessages(state),
+		messages: selectFilteredMessages(state),
 	};
 };
 

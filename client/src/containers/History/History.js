@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Settings from './Settings';
+import Toolbar from './Toolbar';
 import List from './List';
 import { Wrapper } from './History.style';
 
 const HistoryContainer = () => {
 	return (
 		<Wrapper>
-			<Settings />
+			<Toolbar />
 			<List />
 		</Wrapper>
 	);

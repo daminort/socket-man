@@ -8,6 +8,7 @@ export const THEME = Object.freeze({
 		footer: '#ffffff',
 		sidebar: '#001529',
 		mainContent: '#ffffff',
+		panel: '#fafafa',
 	},
 	text: {
 		main: '#1d1d1d',
@@ -16,4 +17,7 @@ export const THEME = Object.freeze({
 	color: {
 		
 	},
+	border: {
+		history: '#d9d9d9',
+	}
 });
