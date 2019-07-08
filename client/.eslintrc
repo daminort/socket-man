@@ -41,11 +41,11 @@
 
     "no-tabs":"off",
     "space-before-function-paren":"off",
-    "key-spacing":"warn",
+    "key-spacing":"off",
     "indent":"off",
     "object-curly-newline":"warn",
     "no-multi-spaces":"warn",
-    "padded-blocks":"warn",
+    "padded-blocks":"off",
     "spaced-comment":"warn",
     "no-confusing-arrow":"warn",
     "arrow-body-style":"warn",

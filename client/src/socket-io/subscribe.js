@@ -18,4 +18,4 @@ export function subscribeOnSocketStatus(socket, store) {
 	socket.on('connect_error', () => {
 		store.dispatch(socketActions.innerSocketStatus(SOCKET_STATUS.error));
 	});
-};
+}

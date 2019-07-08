@@ -15,9 +15,9 @@ export const THEME = Object.freeze({
 		inverted: '#ffffff',
 	},
 	color: {
-		
+
 	},
 	border: {
 		history: '#d9d9d9',
-	}
+	},
 });

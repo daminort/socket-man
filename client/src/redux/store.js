@@ -2,7 +2,7 @@ import createSagaMiddleware from 'redux-saga';
 import createSocketIoMiddleware from 'redux-socket.io';
 import { createStore, applyMiddleware, compose } from 'redux';
 
-import socket from '../socket-io';
+import { socket } from '../socket-io';
 import { subscribeOnSocketStatus } from '../socket-io/subscribe';
 
 import reducers from './reducers';
