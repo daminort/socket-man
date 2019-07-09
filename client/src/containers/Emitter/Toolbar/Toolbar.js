@@ -96,7 +96,7 @@ Toolbar.propTypes = {
 };
 
 const mapState = (state) => {
-	
+
 	return {
 		eventTypes: selectEventTypes(state),
 		filter: selectFilter(state),

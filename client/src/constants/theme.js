@@ -2,6 +2,16 @@ export const THEME = Object.freeze({
 	height: {
 		header: 64,
 		footer: 48,
+		historyToolbar: 40,
+		emitterToolbar: 40,
+		h4Titile: 38,
+	},
+	margin: {
+		mainContent: 8,
+		historyList: 8,
+	},
+	padding: {
+		mainContent: 16,
 	},
 	bg: {
 		header: '#ffffff',
@@ -20,4 +30,22 @@ export const THEME = Object.freeze({
 	border: {
 		history: '#d9d9d9',
 	},
+});
+
+const {
+	height: h,
+	margin: m,
+	padding: p,
+} = THEME;
+
+const mainContent      = h.header + h.footer + 2 * m.mainContent;
+const historyContainer = mainContent + 2 * p.mainContent;
+const historyList      = historyContainer + h.historyToolbar + h.h4Titile + m.historyList;
+const leftContainer    = historyContainer;
+
+export const MIN_HEIGHTS = Object.freeze({
+	mainContent,
+	historyContainer,
+	historyList,
+	leftContainer,
 });

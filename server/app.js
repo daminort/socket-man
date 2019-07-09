@@ -6,6 +6,7 @@ const ip = require('ip');
 
 const { actions } = require('./constants/actions');
 const { log } = require('./helpers/logUtils');
+const { onIncomingAction } = require('./socket-io/listeners');
 
 const app = express();
 const port = process.env.APP_PORT || 5100;
@@ -25,10 +26,10 @@ io.on('connection', (socket) => {
 		log('User has disconnected', 'red');
 	});
 
-	setInterval(() => {
-		socket.emit('action', actions.ping());
-		log('Ping client', 'yellow');
-	}, 10000);
+	// incoming actions from Admin-client
+	socket.on('action', (action) => {
+		onIncomingAction(action, socket);
+	});
 });
 
 http.listen(port);

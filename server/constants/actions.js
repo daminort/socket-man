@@ -1,13 +1,18 @@
 const { makeActionCreator } = require('../helpers/actionsUtils');
 
-const prefix = 'Socket/Server/';
+const outcomingPrefix = 'Socket/Server/';
+const incomingPrefix  = 'Socket/Client/';
 
 const TYPES = {
-	SOCKET_STATUS : `${prefix}socket-status`,
-	PING_CLIENT   : `${prefix}ping`,
+	PING_ENABLED  : `${incomingPrefix}ping-enabled`,
+
+	SOCKET_STATUS : `${outcomingPrefix}socket-status`,
+	PING_CLIENT   : `${outcomingPrefix}ping`,
 };
 
 const actions = {
+	...TYPES,
+
 	socketStatus : makeActionCreator(TYPES.SOCKET_STATUS, 'connected'),
 	ping         : makeActionCreator(TYPES.PING_CLIENT),
 };

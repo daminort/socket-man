@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import * as PropTypes from 'prop-types';
 
 import { Select, Option } from '../../lib';
 
 const selectStyle = { minWidth: '160px' };
 
-const EventTypeSelect = ({ eventTypes, value, style, onChange, ...restProps }) => {
-
+const EventTypeSelect = forwardRef((props, ref) => {
+	const { eventTypes, value, style, onChange, ...restProps } = props;
 	const resStyle = { ...selectStyle, ...style };
 
 	const options = eventTypes.map(type => (
@@ -15,6 +15,7 @@ const EventTypeSelect = ({ eventTypes, value, style, onChange, ...restProps }) =
 
 	return (
 		<Select
+			ref={ref}
 			value={value}
 			style={resStyle}
 			onChange={onChange}
@@ -23,7 +24,7 @@ const EventTypeSelect = ({ eventTypes, value, style, onChange, ...restProps }) =
 			{options}
 		</Select>
 	);
-};
+});
 
 EventTypeSelect.propTypes = {
 	eventTypes : PropTypes.arrayOf(PropTypes.string),

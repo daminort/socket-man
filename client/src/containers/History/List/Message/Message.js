@@ -8,9 +8,11 @@ import { selectMessage } from '../../../../redux/history/selectors';
 import { MESSAGE_TYPES } from '../../../../constants/socket';
 import { POSITION } from '../../../../constants/common';
 
-import { Tag} from '../../../../components/lib';
+import { Tag, Paragraph } from '../../../../components/lib';
 import { Avatar } from '../../../../components/ui';
 import { Wrapper } from './Message.style';
+
+const ellipsis = { rows: 2, expandable: true };
 
 const Message = ({ id, type, message, date, event }) => {
 
@@ -41,7 +43,9 @@ const Message = ({ id, type, message, date, event }) => {
 					/>
 					<div className={contentClass}>
 						<div className="message">
-							{message}
+							<Paragraph ellipsis={ellipsis} copyable>
+								{message}
+							</Paragraph>
 						</div>
 						<div className="tags">
 							<Tag>{date}</Tag>
