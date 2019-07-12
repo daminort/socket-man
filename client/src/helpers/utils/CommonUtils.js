@@ -2,6 +2,7 @@ import Immutable from 'seamless-immutable';
 import { cloneDeep } from '../lodash';
 
 class CommonUtils {
+
 	static safeMerge(target, source, addNewKeys = false) {
 		const sourceKeys = Object.keys(source);
 		const targetKeys = !addNewKeys ? Object.keys(target) : sourceKeys;

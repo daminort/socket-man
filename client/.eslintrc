@@ -44,7 +44,7 @@
     "key-spacing":"off",
     "indent":"off",
     "object-curly-newline":"warn",
-    "no-multi-spaces":"warn",
+    "no-multi-spaces":"off",
     "padded-blocks":"off",
     "spaced-comment":"warn",
     "no-confusing-arrow":"warn",

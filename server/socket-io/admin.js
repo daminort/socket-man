@@ -23,7 +23,12 @@ function pingIntervalOff() {
 	log('Ping disabled', 'blue');
 }
 
+function emitHistoryMessage(socket, type, body, sender) {
+	socket.emit('action', actions.emitHistory(type, body, sender));
+}
+
 module.exports = {
 	pingIntervalOn,
 	pingIntervalOff,
+	emitHistoryMessage,
 };

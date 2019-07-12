@@ -12,6 +12,7 @@ import { Footer } from '../../containers/Footer';
 import { Sidebar } from '../../containers/Sidebar';
 import { HistoryContainer } from '../../containers/History';
 import { Settings } from '../../containers/Settings';
+import { Emitter } from '../../containers/Emitter';
 
 import { LeftWrapper } from './Root.style';
 
@@ -42,11 +43,13 @@ class Root extends PureComponent {
 						<Row gutter={16}>
 							<Col span={12}>
 								<LeftWrapper>
-									<div>Emitter</div>
+									<Emitter />
 									<Settings />
 								</LeftWrapper>
 							</Col>
-							<Col span={12}><HistoryContainer /></Col>
+							<Col span={12}>
+								<HistoryContainer />
+							</Col>
 						</Row>
 					</MainContent>
 					<Footer />

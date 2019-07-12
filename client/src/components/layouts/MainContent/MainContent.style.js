@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { Content as AntContent } from '../../lib';
+import { Content as LibContent } from '../../lib';
 import { THEME, MIN_HEIGHTS } from '../../../constants/theme';
 
 const { bg, margin, padding } = THEME;
 
-export const Content = styled(AntContent)`
+export const Content = styled(LibContent)`
   margin: ${margin.mainContent}px;
   .main-content {
   	background-color: ${bg.mainContent};

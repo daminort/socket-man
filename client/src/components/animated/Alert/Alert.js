@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTransition, animated } from 'react-spring';
 
-import { Alert as AntAlert } from '../../lib';
+import { Alert as LibAlert } from '../../lib';
 
 const Alert = (alertProps) => {
 
@@ -14,7 +14,7 @@ const Alert = (alertProps) => {
 	return transitions.map(({ item, key, props }) =>
 		item && (
 			<animated.div key={key} style={props}>
-				<AntAlert {...alertProps} />
+				<LibAlert {...alertProps} />
 			</animated.div>
 		));
 };

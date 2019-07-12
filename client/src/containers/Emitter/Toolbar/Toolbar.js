@@ -1,117 +1,122 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { Formik, Field, Form } from 'formik';
 
-import historyActions from '../../../redux/history/actions';
-import { selectEventTypes, selectFilter } from '../../../redux/history/selectors';
+import emitterActions from '../../../redux/emitter/actions';
+import { selectEventTypesList, selectToolbar } from '../../../redux/emitter/selectors';
 
-import { Form, FormItem, Input, Button } from '../../../components/lib';
-import { EventTypeSelect } from '../../../components/ui';
+import { Button } from '../../../components/lib';
+import { Input, Select } from '../../../components/forms';
 
 import { Wrapper } from './Toolbar.style';
 
-const Toolbar = ({ eventTypes, form, messagesClear, filterDataSet, filterDataReset }) => {
+const Toolbar = ({ eventType, eventTypes, toolbarParamsSet, eventTypeAdd }) => {
 
-	const { getFieldDecorator, getFieldsValue, resetFields } = form;
+	const [formVisible, setFormVisible] = useState(false);
 
-	const onSubmit = (event) => {
-		event.preventDefault();
-		const values = getFieldsValue();
+	const onSubmit = (values, actions) => {
+		const { newEventType } = values;
 
-		filterDataSet(values);
+		eventTypeAdd(newEventType);
+		setFormVisible(false);
+		toolbarParamsSet({ eventType: newEventType });
+		actions.setSubmitting(false);
 	};
 
-	const onReset = () => {
-		filterDataReset();
-		resetFields();
+	const onChangeEventType = (event) => {
+		const { target: { value } } = event;
+		toolbarParamsSet({ eventType: value });
 	};
 
-	const onClear = () => {
-		messagesClear();
-		filterDataReset();
-		resetFields();
-	};
+	const btnClass = classnames({
+		'visible': !formVisible,
+		'non-visible': formVisible,
+	});
+	const formClass = classnames('right', {
+		'visible': formVisible,
+		'non-visible': !formVisible,
+	});
 
 	return (
 		<Wrapper>
 			<div className="left">
-				<Form layout="inline" onSubmit={onSubmit}>
-					<FormItem label="Event">
-						{getFieldDecorator('eventType')(
-							<EventTypeSelect
-								eventTypes={eventTypes}
-								placeholder="Select event type"
-							/>,
-						)}
-					</FormItem>
-					<FormItem>
-						{getFieldDecorator('text')(
-							<Input placeholder="Search text" />,
-						)}
-					</FormItem>
-					<FormItem>
-						<Button
-							type="primary"
-							htmlType="submit"
-							icon="search"
-							title="Search"
-						/>
-					</FormItem>
-					<FormItem>
-						<Button
-							icon="close"
-							title="Reset form"
-							onClick={onReset}
-						/>
-					</FormItem>
-				</Form>
-			</div>
-			<div className="right">
+				<Select
+					noStretch
+					label="Event:"
+					options={eventTypes}
+					field={{
+						name: 'eventType',
+						value: eventType,
+						onChange: onChangeEventType,
+					}}
+				/>
 				<Button
-					icon="delete"
-					title="Clear history"
-					onClick={onClear}
-				>
-					Clear
-				</Button>
+					type="primary"
+					icon="plus"
+					title="Add new event"
+					className={btnClass}
+					onClick={() => setFormVisible(true)}
+				/>
+			</div>
+			<div className={formClass}>
+				<Formik
+					initialValues={{ newEventType: '' }}
+					onSubmit={onSubmit}
+					render={({ isSubmitting }) => (
+						<Form>
+							<Field
+								name="newEventType"
+								render={(props) => (<Input {...props} placeholder="Enter new event" />)}
+							/>
+							<Button
+								type="primary"
+								htmlType="submit"
+								icon="check"
+								title="Save new event"
+								disabled={isSubmitting}
+							/>
+						</Form>
+					)}
+				/>
 			</div>
 		</Wrapper>
 	);
 };
 
-Toolbar.displayName = 'HistoryToolbar';
+Toolbar.displayName = 'EmitterToolbar';
 
 Toolbar.propTypes = {
-	eventTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-	filter: PropTypes.shape({
-		eventType : PropTypes.string,
-		text      : PropTypes.string,
-	}).isRequired,
+	eventType        : PropTypes.string,
+	eventTypes       : PropTypes.arrayOf(PropTypes.shape({
+		value: PropTypes.string,
+		title: PropTypes.string,
+	})).isRequired,
 
-	messagesClear: PropTypes.func.isRequired,
-	filterDataSet: PropTypes.func.isRequired,
-	filterDataReset: PropTypes.func.isRequired,
+	eventTypeAdd     : PropTypes.func.isRequired,
+	toolbarParamsSet : PropTypes.func.isRequired,
+};
 
-	form: PropTypes.object.isRequired,
+Toolbar.defaultProps = {
+	eventType: '',
 };
 
 const mapState = (state) => {
+	const { eventType } = selectToolbar(state);
 
 	return {
-		eventTypes: selectEventTypes(state),
-		filter: selectFilter(state),
+		eventType,
+		eventTypes: selectEventTypesList(state),
 	};
 };
 
 const mapActions = {
-	messagesClear   : historyActions.messagesClear,
-	filterDataSet   : historyActions.filterDataSet,
-	filterDataReset : historyActions.filterDataReset,
+	eventTypeAdd     : emitterActions.eventTypeAdd,
+	toolbarParamsSet : emitterActions.toolbarParamsSet,
 };
-
-const withForm = Form.create({ name: 'historyFilter' })(Toolbar);
 
 export default connect(
 	mapState,
 	mapActions
-)(withForm);
+)(Toolbar);

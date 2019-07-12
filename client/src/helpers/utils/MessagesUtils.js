@@ -4,11 +4,6 @@ import { MESSAGE_TYPES, EVENT_TYPES } from '../../constants/socket';
 import Formatter from '../Formatter';
 import { random } from '../lodash';
 
-// settings
-const useLorem        = true;
-const useMessageTypes = true;
-const useEventTypes   = true;
-
 // mock data
 const pingMessages = [
 	'Hi! How are you? :)',
@@ -40,17 +35,17 @@ const eventTypes = [
 // utils
 class MessagesUtils {
 
-	static createPingMessage() {
+	static createPingMessage(pingImitateUsers = false) {
 		const messageIndex     = random(0, pingMessages.length - 1);
 		const messageTypeIndex = random(0, messageTypes.length - 1);
 		const eventTypeIndex   = random(0, eventTypes.length - 1);
 
-		const text  = pingMessages[messageIndex];
-		const type  = useMessageTypes ? messageTypes[messageTypeIndex] : MESSAGE_TYPES.server;
-		const event = useEventTypes ? eventTypes[eventTypeIndex] : EVENT_TYPES.ping;
+		const text  = pingImitateUsers ? pingMessages[messageIndex]     : 'Incoming ping';
+		const type  = pingImitateUsers ? messageTypes[messageTypeIndex] : MESSAGE_TYPES.server;
+		const event = pingImitateUsers ? eventTypes[eventTypeIndex]     : EVENT_TYPES.ping;
 
 		const isOdd = Math.floor((messageIndex + messageTypeIndex + eventTypeIndex) / 2) === (messageIndex + messageTypeIndex + eventTypeIndex) / 2;
-		const message = useLorem && isOdd
+		const message = pingImitateUsers && isOdd
 			? `${text}\n${lorem}`
 			: text;
 
@@ -60,6 +55,16 @@ class MessagesUtils {
 			event,
 			type,
 			message,
+		};
+	}
+
+	static createHistoryMessage(payload) {
+		return {
+			id      : uuid(),
+			date    : Formatter.fullDateTime(),
+			event   : payload.type || 'NULL',
+			type    : payload.sender || MESSAGE_TYPES.server,
+			message : JSON.stringify(payload.body),
 		};
 	}
 }

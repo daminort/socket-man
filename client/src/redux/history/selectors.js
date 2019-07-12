@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { find } from '../../helpers/lodash';
+import { TransformsUtils } from '../../helpers/utils/TransformsUtils';
 
 const messages   = (state) => state.History.messages;
 const eventTypes = (state) => state.History.eventTypes;
@@ -20,6 +21,11 @@ export const selectMessage = (id) => {
 export const selectEventTypes = createSelector(
 	[eventTypes],
 	eventTypes => eventTypes,
+);
+
+export const selectEventTypesList = createSelector(
+	[selectEventTypes],
+	eventTypes => TransformsUtils.createSelectOptions(eventTypes),
 );
 
 export const selectFilter = createSelector(
