@@ -15,10 +15,12 @@ const localURL = ip.address();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
+const { SocketService } = require('./socket-io/SocketService');
+
 app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'public', 'index.html')));
 
-io.on('connection', (socket) => {
-	log('User has connected', 'green');
+io.on('connect', (socket) => {
+	SocketService.addClient(socket);
 
 	socket.emit('action', actions.socketStatus(true));
 
