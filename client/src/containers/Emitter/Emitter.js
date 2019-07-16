@@ -31,7 +31,7 @@ const Emitter = ({ eventType, eventDataSet, emitEvent }) => {
 		}
 
 		eventDataSet(eventData);
-		emitEvent(eventType, TransformsUtils.converEventData(eventData));
+		emitEvent(eventType, TransformsUtils.convertEventData(eventData));
 		actions.setSubmitting(false);
 	};
 

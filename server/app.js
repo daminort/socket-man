@@ -4,9 +4,7 @@ const path = require('path');
 const express = require('express');
 const ip = require('ip');
 
-const { actions } = require('./constants/actions');
 const { log } = require('./helpers/logUtils');
-const { onIncomingAction } = require('./socket-io/listeners');
 
 const app = express();
 const port = process.env.APP_PORT || 5100;
@@ -22,20 +20,19 @@ app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'public', 'index
 io.on('connect', (socket) => {
 	SocketService.addClient(socket);
 
-	socket.emit('action', actions.socketStatus(true));
-
 	socket.on('disconnect', () => {
-		log('User has disconnected', 'red');
+		SocketService.removeClient(socket);
 	});
 
 	// incoming actions from Admin-client
 	socket.on('action', (action) => {
-		onIncomingAction(action, socket);
+		SocketService.onIncomingAdminAction(action);
 	});
 });
 
 http.listen(port);
 
-console.log('Socket server has been started:');
-console.log(`  -- Local:   https://localhost:${port}`);
-console.log(`  -- Network: https://${localURL}:${port}`);
+log('Socket server has been started:', 'green', { noDate: true });
+log(`  -- Local:   https://localhost:${port}`, 'cyan', { noDate: true });
+log(`  -- Network: https://${localURL}:${port}`, 'cyan', { noDate: true });
+log();

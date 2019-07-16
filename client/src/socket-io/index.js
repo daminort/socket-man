@@ -1,7 +1,11 @@
 import io from 'socket.io-client';
-import { socketConnectionString } from '../config';
+import { socketConnectionString, adminHash } from '../config';
 
-const socket = io(socketConnectionString);
+const options = {
+	query: { adminHash },
+};
+
+const socket = io(socketConnectionString, options);
 
 export default socket;
 export { socket };

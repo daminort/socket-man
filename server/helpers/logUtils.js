@@ -4,10 +4,20 @@ const format = require('date-fns/format');
 const { FORMATS } = require('../constants/common');
 
 const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'gray'];
+const defaultOptions = {
+	trim   : false,
+	noDate : false,
+};
 
-function log(message, functionColor = null, options = {}) {
+function log(message, functionColor = null, options = defaultOptions) {
+	if (!message) {
+		console.log('');
+		return;
+	}
+
 	const now = format(new Date(), FORMATS.fullDateTime);
 	let resMessage = message;
+
 	if (typeof functionColor === 'function') {
 		resMessage = functionColor(message);
 	} else if (colors.includes(functionColor)) {
@@ -21,7 +31,11 @@ function log(message, functionColor = null, options = {}) {
 		}
 	}
 
-	console.log(`[${now}] ${resMessage}`);
+	if (!options.noDate) {
+		resMessage = `[${now}] ${resMessage}`;
+	}
+
+	console.log(resMessage);
 }
 
 module.exports = {

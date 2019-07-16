@@ -12,10 +12,11 @@ class TransformsUtils {
 		}));
 	}
 
-	static converEventData(eventData) {
+	static convertEventData(eventData) {
 		try {
 			const draft = eval(`(${eventData})`); /* eslint-disable-line no-eval */
 			return JSON.parse(JSON.stringify(draft));
+
 		} catch (e) {
 			return eventData;
 		}

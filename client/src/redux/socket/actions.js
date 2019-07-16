@@ -5,14 +5,14 @@ const prefixIncoming  = 'Socket/Server/';
 const prefixInner = 'Socket/Inner/';
 
 const TYPES = {
-  OUTCOMING_PING_ENABLED : `${prefixOutcoming}ping-enabled`,
-  OUTCOMING_EMIT_EVENT   : `${prefixOutcoming}emit-event`,
+  OUTCOMING_PING_ENABLED    : `${prefixOutcoming}ping-enabled`,
+  OUTCOMING_EMIT_EVENT      : `${prefixOutcoming}emit-event`,
 
-  INNER_SOCKET_STATUS    : `${prefixInner}socket-status`,
+  INNER_SOCKET_STATUS       : `${prefixInner}socket-status`,
 
-  INCOMING_SOCKET_STATUS : `${prefixIncoming}socket-status`,
-  INCOMING_PING_CLIENT   : `${prefixIncoming}ping`,
-  INCOMING_EMIT_HISTORY  : `${prefixIncoming}emit-history`,
+  INCOMING_SOCKET_STATUS    : `${prefixIncoming}socket-status`,
+  INCOMING_PING_CLIENT      : `${prefixIncoming}ping`,
+  INCOMING_EMIT_HISTORY     : `${prefixIncoming}emit-history`,
 };
 
 const actions = {
