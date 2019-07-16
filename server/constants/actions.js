@@ -4,20 +4,24 @@ const outcomingPrefix = 'Socket/Server/';
 const incomingPrefix  = 'Socket/Client/';
 
 const TYPES = {
-	INCOMING_PING_ENABLED  : `${incomingPrefix}ping-enabled`,
-	INCOMING_EMIT_EVENT    : `${incomingPrefix}emit-event`,
+	INCOMING_PING_ENABLED         : `${incomingPrefix}ping-enabled`,
+	INCOMING_EMIT_EVENT           : `${incomingPrefix}emit-event`,
+	INCOMING_GET_CONNECTED_USERS  : `${incomingPrefix}get-connected-users`,
 
-	SOCKET_STATUS : `${outcomingPrefix}socket-status`,
-	PING_CLIENT   : `${outcomingPrefix}ping`,
-	EMIT_HISTORY  : `${outcomingPrefix}emit-history`,
+	OUTCOMING_PING_CLIENT         : `${outcomingPrefix}ping`,
+	OUTCOMING_EMIT_HISTORY        : `${outcomingPrefix}emit-history`,
+	OUTCOMING_USER_CONNECTED      : `${outcomingPrefix}user-connected`,
+	OUTCOMING_GET_CONNECTED_USERS : `${outcomingPrefix}connected-users`,
 };
 
 const actions = {
 	...TYPES,
 
-	socketStatus : makeActionCreator(TYPES.SOCKET_STATUS, 'connected'),
-	ping         : makeActionCreator(TYPES.PING_CLIENT),
-	emitHistory  : makeActionCreator(TYPES.EMIT_HISTORY, 'type', 'body', 'sender'),
+	outcomingPing              : makeActionCreator(TYPES.OUTCOMING_PING_CLIENT),
+	outcomingEmitHistory       : makeActionCreator(TYPES.OUTCOMING_EMIT_HISTORY, 'type', 'body', 'sender'),
+	outcomingUserConnected     : makeActionCreator(TYPES.OUTCOMING_USER_CONNECTED, 'id', 'connected', 'handshake'),
+	outcomingGetConnectedUsers : makeActionCreator(TYPES.OUTCOMING_GET_CONNECTED_USERS, 'users'),
+
 };
 
 module.exports = {

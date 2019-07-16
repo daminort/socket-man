@@ -2,7 +2,7 @@ import { all, takeLatest, takeEvery, put, select } from 'redux-saga/effects';
 
 import MessagesUtils from '../../helpers/utils/MessagesUtils';
 
-import { selectApp } from '../app/selectors';
+import { selectApp, selectSocket } from '../app/selectors';
 
 import appActions from '../app/actions';
 import historyActions from '../history/actions';
@@ -26,11 +26,35 @@ function* incomingEmitHistory({ payload }) {
   yield put(historyActions.messageAdd(message));
 }
 
+function* incomingConnectedUsers({ payload }) {
+  const { users } = payload;
+  yield put(appActions.socketParamsSet({ connectedUsers: users }));
+}
+
+function* incomingUserConnected({ payload }) {
+  const { id, connected, handshake } = payload;
+  let { connectedUsers } = yield select(selectSocket);
+
+  if (connected) {
+    connectedUsers = connectedUsers.concat({
+      id,
+      connected,
+      handshake,
+    });
+  } else {
+    connectedUsers = connectedUsers.filter(user => user.id !== id);
+  }
+
+  yield put(appActions.socketParamsSet({ connectedUsers }));
+}
+
 export default function* socketSaga() {
   yield all([
     takeLatest(actions.INNER_SOCKET_STATUS, innerSocketStatus),
     takeLatest(actions.INCOMING_PING_CLIENT, incomingPing),
+    takeLatest(actions.INCOMING_CONNECTED_USERS, incomingConnectedUsers),
 
     takeEvery(actions.INCOMING_EMIT_HISTORY, incomingEmitHistory),
+    takeEvery(actions.INCOMING_USER_CONNECTED, incomingUserConnected),
   ]);
 }

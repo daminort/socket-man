@@ -5,6 +5,7 @@ export function subscribeOnSocketStatus(socket, store) {
 
 	socket.on('connect', () => {
 		store.dispatch(socketActions.innerSocketStatus(SOCKET_STATUS.connected));
+		store.dispatch(socketActions.outcomingGetConnectedUsers());
 	});
 
 	socket.on('disconnect', () => {

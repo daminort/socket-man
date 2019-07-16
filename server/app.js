@@ -13,7 +13,7 @@ const localURL = ip.address();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-const { SocketService } = require('./socket-io/SocketService');
+const { SocketService } = require('./services/SocketService');
 
 app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'public', 'index.html')));
 

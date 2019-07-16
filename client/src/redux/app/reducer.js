@@ -12,9 +12,10 @@ const initState = Immutable.from({
     pingImitateUsers : false,
   },
   socket: {
-    address: '',
-    options: '',
-    status: SOCKET_STATUS.disconnected,
+    address        : '',
+    options        : '',
+    status         : SOCKET_STATUS.disconnected,
+    connectedUsers : [],
   },
 });
 
