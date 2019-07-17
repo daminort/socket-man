@@ -16,6 +16,7 @@ const Settings = (props) => {
 		pingImitateUsers,
 		appParamsSet,
 		outcomingPingEnabled,
+		outcomingImitateUsers,
 	} = props;
 
 	const onChangePingEnabled = () => {
@@ -25,6 +26,7 @@ const Settings = (props) => {
 
 	const onChangePingImitate = () => {
 		appParamsSet({ pingImitateUsers: !pingImitateUsers });
+		outcomingImitateUsers(!pingImitateUsers);
 	};
 
 	return (
@@ -48,15 +50,16 @@ const Settings = (props) => {
 };
 
 Settings.propTypes = {
-	pingEnabled          : PropTypes.bool.isRequired,
-	pingImitateUsers     : PropTypes.bool.isRequired,
-	appParamsSet         : PropTypes.func.isRequired,
-	outcomingPingEnabled : PropTypes.func.isRequired,
+	pingEnabled           : PropTypes.bool.isRequired,
+	pingImitateUsers      : PropTypes.bool.isRequired,
+	appParamsSet          : PropTypes.func.isRequired,
+	outcomingPingEnabled  : PropTypes.func.isRequired,
+	outcomingImitateUsers : PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {
 	const { pingEnabled, pingImitateUsers } = selectApp(state);
-	
+
 	return {
 		pingEnabled,
 		pingImitateUsers,
@@ -64,8 +67,9 @@ const mapState = (state) => {
 };
 
 const mapActions = {
-	appParamsSet         : appActions.appParamsSet,
-	outcomingPingEnabled : socketActions.outcomingPingEnabled,
+	appParamsSet          : appActions.appParamsSet,
+	outcomingPingEnabled  : socketActions.outcomingPingEnabled,
+	outcomingImitateUsers : socketActions.outcomingImitateUsers,
 };
 
 export default connect(

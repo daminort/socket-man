@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <div class="content">
+        <form id="headForm">
+            <span>Server address:</span>
+            <input id="serverAddress" type="text" value="http://localhost:5100" />
+            <input id="queryParams" type="text" placeholder="Query params" />
+            <button id="connect" type="button" class="green">Connect</button>
+        </form>
+        <div id="history"></div>
+    </div>
+</body>
+</html>

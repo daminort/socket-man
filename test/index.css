@@ -1,0 +1,88 @@
+body {
+    font-family: 'Roboto Slab', serif;
+    font-size: 14px;
+    color: rgba(0,0,0, 0.8);
+}
+
+input {
+    font-family: 'Roboto Slab', serif;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: 1px rgba(0,0,0, 0.4) solid;
+    border-radius: 4px;
+    color: inherit;
+    margin-right: 8px;
+    width: 50%;
+}
+
+button {
+    font-family: 'Roboto Slab', serif;
+    font-size: 14px;
+    padding: 0px 16px;
+    border: 1px rgba(0,0,0, 0.4) solid;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+button.green {
+    background-color: #3ecd20;
+}
+
+button.red {
+    background-color: #dc2a2f;
+}
+
+.content {
+    margin: 16px auto 16px auto;
+    width: 70vw;
+    color: inherit;
+}
+
+#headForm {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#headForm > span {
+    display: flex;
+    align-self: center;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+#history {
+    margin-top: 16px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+}
+
+#history > .message {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 8px;
+    padding: 8px 16px;
+    border: 1px rgba(0,0,0, 0.4) solid;
+    border-radius: 4px;
+}
+
+#history > .message > .text {
+    width: 100%;
+}
+
+#history > .message > .stats {
+    width: 150px;
+}
+
+#history > .message > .stats > .type {
+    margin-bottom: 8px;
+    color: #3938e3;
+    font-size: 15px;
+}
+
+#history > .message > .stats > .date {
+    color: #5e5e5e;
+    font-size: 13px;
+}

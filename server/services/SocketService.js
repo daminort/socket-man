@@ -1,6 +1,7 @@
 const { actions } = require('../constants/actions');
 const { SENDERS } = require('../constants/common');
 const { log } = require('../helpers/logUtils');
+const { MessagesService } = require('../services/MessagesService');
 
 const adminHash = process.env.ADMIN_HASH || '198d69b1-c9dc-46cc-93e5-1e2e78cb25bf';
 
@@ -13,6 +14,7 @@ class SocketService {
 		};
 		this.pingInterval = null;
 		this.pingDelay    = 10000;
+		this.imitateUsers = false;
 	}
 
 	getAdmin() {
@@ -100,6 +102,10 @@ class SocketService {
 				this.onPingEnabled(payload);
 				break;
 			}
+			case actions.INCOMING_IMITATE_USERS: {
+				this.onImitateUsers(payload);
+				break;
+			}
 			case actions.INCOMING_EMIT_EVENT: {
 				const { type, body } = payload;
 				this.emitHistoryMessage(type, body, SENDERS.admin);
@@ -127,14 +133,31 @@ class SocketService {
 			return;
 		}
 
-		admin.emit('action', actions.outcomingPing());
+		const message = MessagesService.createPingMessage(this.imitateUsers);
+		admin.emit('action', actions.outcomingPing(message));
 
 		this.pingInterval = setInterval(() => {
-			admin.emit('action', actions.outcomingPing());
-			log('Ping admin', 'yellow');
+			const message = MessagesService.createPingMessage(this.imitateUsers);
+
+			admin.emit('action', actions.outcomingPing(message));
+			this.emitMessages('ping', message);
+
+			log(`Ping: ${JSON.stringify(message)}`, 'yellow', { trim: true });
 		}, this.pingDelay);
 
 		log('Ping enabled', 'blue');
+		log(`Ping: ${JSON.stringify(message)}`, 'yellow', { trim: true });
+	}
+
+	onImitateUsers(payload) {
+		const { imitateUsers } = payload;
+		this.imitateUsers = imitateUsers;
+
+		if (imitateUsers) {
+			log('Imitating users enabled', 'blue');
+		} else {
+			log('Imitating users disabled', 'blue');
+		}
 	}
 
 	onGetConnectedUsers() {

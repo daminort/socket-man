@@ -13,7 +13,7 @@ const ConnectedUsers = ({ connectedUsers }) => {
 				showIcon
 				key="warning"
 				type="warning"
-				message="No connected users"
+				message="Nobody connected"
 			/>
 		);
 	}
