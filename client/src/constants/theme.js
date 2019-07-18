@@ -22,6 +22,7 @@ export const THEME = Object.freeze({
 	},
 	text: {
 		main: '#1d1d1d',
+		hint: '#767676',
 		inverted: '#ffffff',
 	},
 	color: {
@@ -29,6 +30,7 @@ export const THEME = Object.freeze({
 	},
 	border: {
 		history: '#d9d9d9',
+		hint: '#00577c',
 	},
 });
 

@@ -2,7 +2,8 @@ import { all, takeLatest, takeEvery, put, select } from 'redux-saga/effects';
 
 import MessagesUtils from '../../helpers/utils/MessagesUtils';
 
-import { selectApp, selectSocket } from '../app/selectors';
+import { selectSocket } from '../app/selectors';
+import { selectEventTypes } from '../history/selectors';
 
 import appActions from '../app/actions';
 import historyActions from '../history/actions';
@@ -15,14 +16,21 @@ function* innerSocketStatus({ payload }) {
 }
 
 // Incoming ---------------------------------------------------------------------------------------
-function* incomingPing() {
-  const { pingImitateUsers } = yield select(selectApp);
-  const message = MessagesUtils.createPingMessage(pingImitateUsers);
-  yield put(historyActions.messageAdd(message));
+function* incomingPing({ payload }) {
+  const { message } = payload;
+  const historyMessage = MessagesUtils.createPingMessage(message);
+  yield put(historyActions.messageAdd(historyMessage));
 }
 
 function* incomingEmitHistory({ payload }) {
   const message = MessagesUtils.createHistoryMessage(payload);
+  const { type } = message;
+
+  const eventTypes = yield select(selectEventTypes);
+  if (!eventTypes.includes(type)) {
+    yield put(historyActions.eventTypeAdd(type));
+  }
+
   yield put(historyActions.messageAdd(message));
 }
 
@@ -48,10 +56,17 @@ function* incomingUserConnected({ payload }) {
   yield put(appActions.socketParamsSet({ connectedUsers }));
 }
 
+function* incomingServerSettings({ payload }) {
+  const { settings } = payload;
+  const { pingEnabled, imitateUsers } = settings;
+  yield put(appActions.appParamsSet({ pingEnabled, imitateUsers }));
+}
+
 export default function* socketSaga() {
   yield all([
     takeLatest(actions.INNER_SOCKET_STATUS, innerSocketStatus),
     takeLatest(actions.INCOMING_PING_CLIENT, incomingPing),
+    takeLatest(actions.INCOMING_GET_SERVER_SETTINGS, incomingServerSettings),
     takeLatest(actions.INCOMING_CONNECTED_USERS, incomingConnectedUsers),
 
     takeEvery(actions.INCOMING_EMIT_HISTORY, incomingEmitHistory),

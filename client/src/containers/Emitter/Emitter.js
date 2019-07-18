@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import * as PropTypes from 'prop-types'; 
+import * as PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { connect } from 'react-redux';
 
@@ -14,10 +14,11 @@ import { TransformsUtils } from '../../helpers/utils/TransformsUtils';
 import { Title, Button } from '../../components/lib';
 import { TextArea } from '../../components/forms';
 import Toolbar from './Toolbar';
+import Hint from './Hint';
 
 import { Wrapper } from './Emitter.style';
 
-const Emitter = ({ eventType, eventDataSet, emitEvent }) => {
+const Emitter = ({ eventType, eventDataSet, emitEvent, subscribeOnEvent }) => {
 
 	const formRef = useRef({});
 
@@ -31,8 +32,16 @@ const Emitter = ({ eventType, eventDataSet, emitEvent }) => {
 		}
 
 		eventDataSet(eventData);
-		emitEvent(eventType, TransformsUtils.convertEventData(eventData));
-		actions.setSubmitting(false);
+
+		if (eventData) {
+			emitEvent(eventType, TransformsUtils.convertEventData(eventData));
+		} else {
+			subscribeOnEvent(eventType);
+		}
+
+		setTimeout(() => {
+			actions.setSubmitting(false);
+		}, 500);
 	};
 
 	// TODO: saving current data as template
@@ -63,6 +72,7 @@ const Emitter = ({ eventType, eventDataSet, emitEvent }) => {
 									/>
 								)}
 							/>
+							<Hint />
 							<div className="buttons">
 								<Button
 									htmlType="button"
@@ -92,9 +102,10 @@ const Emitter = ({ eventType, eventDataSet, emitEvent }) => {
 };
 
 Emitter.propTypes = {
-	eventType    : PropTypes.string.isRequired,
-	eventDataSet : PropTypes.func.isRequired,
-	emitEvent    : PropTypes.func.isRequired,
+	eventType        : PropTypes.string.isRequired,
+	eventDataSet     : PropTypes.func.isRequired,
+	emitEvent        : PropTypes.func.isRequired,
+	subscribeOnEvent : PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {
@@ -105,8 +116,9 @@ const mapState = (state) => {
 };
 
 const mapActions = {
-	eventDataSet : emitterActions.eventDataSet,
-	emitEvent    : socketActions.outcomingEmitEvent,
+	eventDataSet     : emitterActions.eventDataSet,
+	emitEvent        : socketActions.outcomingEmitEvent,
+	subscribeOnEvent : socketActions.outcomingSubscribeOnEvent,
 };
 
 export default connect(

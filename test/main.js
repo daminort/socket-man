@@ -5,6 +5,11 @@ const elements = {
 	serverAddress : null,
 	queryParams   : null,
 	connect       : null,
+
+	emitForm      : null,
+	eventType     : null,
+	eventBody     : null,
+	emit          : null,
 }
 
 const socketParams = {
@@ -23,10 +28,19 @@ function init() {
 	elements.serverAddress = document.getElementById('serverAddress');
 	elements.queryParams   = document.getElementById('queryParams');
 	elements.connect       = document.getElementById('connect');
+
+	elements.emitForm      = document.getElementById('emitForm');
+	elements.eventType     = document.getElementById('eventType');
+	elements.eventBody     = document.getElementById('eventBody');
+	elements.emit          = document.getElementById('emit');
+
 	elements.history       = document.getElementById('history');
 
-	elements.headForm.addEventListener('submit', onSubmit);
+	elements.headForm.addEventListener('submit', onSubmitConnect);
+	elements.emitForm.addEventListener('submit', onSubmitEmit);
+
 	elements.connect.addEventListener('click', onClickConnect);
+	elements.emit.addEventListener('click', onClickEmit);
 }
 
 function addEvent(type, body) {
@@ -54,12 +68,57 @@ function addEvent(type, body) {
 	mMessage.appendChild(mStats);
 
 	elements.history.appendChild(mMessage);
+
+	setTimeout(() => {
+		mMessage.classList.add('visible');
+	}, 100);
+}
+
+function getEmitValues() {
+	return {
+		type: elements.eventType.value.trim(),
+		body: elements.eventBody.value.trim(),
+	};
+}
+
+function validateEmitValues(values) {
+	return (!values.type || !values.body);
+}
+
+function createEmitBody(body) {
+	try {
+		const draft = eval(`(${body})`);
+		return JSON.parse(JSON.stringify(draft));
+
+	} catch (e) {
+		return body;
+	}
+}
+
+function emitEvent() {
+	if (!socketParams.connected) {
+		return;
+	}
+
+	const values = getEmitValues();
+	const isError = validateEmitValues(values);
+	if (isError) {
+		console.error('You have to specify both "Type" and "Body" of event');
+		return;
+	}
+
+	const body = createEmitBody(values.body);
+	socket.emit(values.type, body);
 }
 
 // Events -----------------------------------------------------------------------------------------
-function onSubmit(event) {
+function onSubmitConnect(event) {
 	event.preventDefault();
+}
 
+function onSubmitEmit(event) {
+	event.preventDefault();
+	emitEvent();
 }
 
 function onClickConnect(event) {
@@ -95,6 +154,11 @@ function onClickConnect(event) {
 		console.error('Cannot connect to socket server');
 		console.error(e);
 	}
+}
+
+function onClickEmit(event) {
+	event.preventDefault();
+	emitEvent();
 }
 
 function onSocket(connected) {

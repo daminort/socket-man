@@ -8,7 +8,7 @@ const {
 const socket = {
 	protocol : REACT_APP_SOCKET_SERVER_PROTOCOL || 'http',
 	address  : REACT_APP_SOCKET_SERVER_ADDRESS || 'localhost',
-	port     : REACT_APP_SOCKET_SERVER_PORT || '5100',
+	port     : REACT_APP_SOCKET_SERVER_PORT || '9710',
 };
 const socketConnectionString = `${socket.protocol}://${socket.address}:${socket.port}`;
 const adminHash = REACT_APP_ADMIN_HASH || '198d69b1-c9dc-46cc-93e5-1e2e78cb25bf';

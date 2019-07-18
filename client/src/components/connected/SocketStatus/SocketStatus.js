@@ -2,6 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { socketConnectionString } from '../../../config';
 import { selectSocket } from '../../../redux/app/selectors';
 import { SOCKET_STATUS } from '../../../constants/socket';
 
@@ -24,7 +25,7 @@ const alertMessages = {
 const SocketStatus = ({ status }) => {
 
 	const type    = alertTypes[status];
-	const message = alertMessages[status];
+	const message = `${alertMessages[status]} on ${socketConnectionString}`;
 
 	return (
 		<Alert

@@ -10,12 +10,20 @@
 </head>
 <body>
     <div class="content">
-        <form id="headForm">
-            <span>Server address:</span>
-            <input id="serverAddress" type="text" value="http://localhost:5100" />
-            <input id="queryParams" type="text" placeholder="Query params" />
-            <button id="connect" type="button" class="green">Connect</button>
-        </form>
+        <div class="forms">
+            <form id="headForm">
+                <span>Server:</span>
+                <input id="serverAddress" type="text" value="http://localhost:9710" placeholder="http://localhost:9710" />
+                <input id="queryParams" type="text" placeholder="Query params" />
+                <button id="connect" type="button" class="green">Connect</button>
+            </form>
+            <form id="emitForm">
+                <span>Emit:</span>
+                <input id="eventType" type="text" placeholder="Type" />
+                <input id="eventBody" type="text" placeholder="Body" />
+                <button id="emit" type="submit" class="blue">Emit</button>
+            </form>
+        </div>
         <div id="history"></div>
     </div>
 </body>

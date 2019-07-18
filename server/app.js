@@ -7,7 +7,7 @@ const ip = require('ip');
 const { log } = require('./helpers/logUtils');
 
 const app = express();
-const port = process.env.APP_PORT || 5100;
+const port = process.env.APP_PORT || 9710;
 const localURL = ip.address();
 
 const http = require('http').createServer(app);

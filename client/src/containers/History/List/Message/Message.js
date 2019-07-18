@@ -14,9 +14,9 @@ import { Wrapper } from './Message.style';
 
 const ellipsis = { rows: 2, expandable: true };
 
-const Message = ({ id, type, message, date, event }) => {
+const Message = ({ id, type, body, date, sender }) => {
 
-	const position = (type === MESSAGE_TYPES.admin) ? POSITION.right : POSITION.left;
+	const position = (sender === MESSAGE_TYPES.admin) ? POSITION.right : POSITION.left;
 
 	const blockClass = classnames('message-block', {
 		left  : (position === POSITION.left),
@@ -38,18 +38,18 @@ const Message = ({ id, type, message, date, event }) => {
 			<animated.div key={key} style={props}>
 				<Wrapper className={blockClass} key={id}>
 					<Avatar
-						type={type}
+						type={sender}
 						position={position}
 					/>
 					<div className={contentClass}>
 						<div className="message">
 							<Paragraph ellipsis={ellipsis} copyable>
-								{message}
+								{body}
 							</Paragraph>
 						</div>
 						<div className="tags">
 							<Tag>{date}</Tag>
-							<Tag color="geekblue">{event}</Tag>
+							<Tag color="geekblue">{type}</Tag>
 						</div>
 					</div>
 				</Wrapper>
@@ -58,11 +58,11 @@ const Message = ({ id, type, message, date, event }) => {
 };
 
 Message.propTypes = {
-	id      : PropTypes.string.isRequired,
-	type    : PropTypes.string.isRequired,
-	message : PropTypes.string.isRequired,
-	date    : PropTypes.string.isRequired,
-	event   : PropTypes.string.isRequired,
+	id     : PropTypes.string.isRequired,
+	type   : PropTypes.string.isRequired,
+	body   : PropTypes.string.isRequired,
+	date   : PropTypes.string.isRequired,
+	sender : PropTypes.string.isRequired,
 };
 
 const mapState = (state, props) => {
@@ -70,10 +70,10 @@ const mapState = (state, props) => {
 	const message = selectMessage(props.id)(state);
 
 	return {
-		type    : message.type,
-		message : message.message,
-		date    : message.date,
-		event   : message.event,
+		type   : message.type,
+		body   : message.body,
+		date   : message.date,
+		sender : message.sender,
 	};
 };
 

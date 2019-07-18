@@ -12,6 +12,7 @@ class SocketService {
 			admin   : null,
 			clients : [],
 		};
+		this.subscribeTypes = [];
 		this.pingInterval = null;
 		this.pingDelay    = 10000;
 		this.imitateUsers = false;
@@ -55,6 +56,8 @@ class SocketService {
 		if (admin) {
 			admin.emit('action', actions.outcomingUserConnected(id, true, handshake));
 		}
+
+		this.subscribeOnClientsEvents();
 	}
 
 	removeClient(socket) {
@@ -87,6 +90,18 @@ class SocketService {
 		clients.forEach(socket => socket.emit(type, body));
 	}
 
+	subscribeOnClientsEvents() {
+		const { connections: { clients } } = this;
+		this.subscribeTypes.forEach(type => {
+			clients.forEach(socket => {
+				socket.on(type, (body) => {
+					log(`Client event. Type: ${type}. Body: ${JSON.stringify(body)}`, 'cyan', { trim: true });
+					this.emitHistoryMessage(type, body, SENDERS.client);
+				});
+			})
+		});
+	}
+
 	// Events ---------------------------------------------------------------------------------------
 	onIncomingAdminAction(action) {
 		const { type, payload } = action;
@@ -116,6 +131,14 @@ class SocketService {
 				this.onGetConnectedUsers();
 				break;
 			}
+			case actions.INCOMING_GET_SERVER_SETTINGS: {
+				this.onGetServerSettings();
+				break;
+			}
+			case actions.INCOMING_SUBSCRIBE_ON_EVENT: {
+				this.onSubscribeEvent(payload);
+				break;
+			}
 			default: {
 				log(`Unknown action type ${type} with payload: ${JSON.stringify(payload)}`, 'gray');
 			}
@@ -124,21 +147,24 @@ class SocketService {
 
 	// Reactions on incoming Admin actions ----------------------------------------------------------
 	onPingEnabled(payload) {
-		const { connections: { admin } } = this;
 		const { pingEnabled } = payload;
+
 		clearInterval(this.pingInterval);
+		this.pingInterval = null;
 
 		if (!pingEnabled) {
 			log('Ping disabled', 'blue');
 			return;
 		}
 
+		const admin = this.getAdmin();
 		const message = MessagesService.createPingMessage(this.imitateUsers);
 		admin.emit('action', actions.outcomingPing(message));
 
 		this.pingInterval = setInterval(() => {
 			const message = MessagesService.createPingMessage(this.imitateUsers);
 
+			const admin = this.getAdmin();
 			admin.emit('action', actions.outcomingPing(message));
 			this.emitMessages('ping', message);
 
@@ -177,6 +203,26 @@ class SocketService {
 		});
 
 		admin.emit('action', actions.outcomingGetConnectedUsers(users));
+	}
+
+	onGetServerSettings() {
+		const admin = this.getAdmin();
+		const settings = {
+			pingEnabled: Boolean(this.pingInterval),
+			imitateUsers: this.imitateUsers,
+		};
+
+		admin.emit('action', actions.outcomingGetServerSettings(settings));
+	}
+
+	onSubscribeEvent(payload) {
+		const { subscribeTypes } = this;
+		const { type } = payload;
+
+		if (!subscribeTypes.includes(type)) {
+			subscribeTypes.push(type);
+			this.subscribeOnClientsEvents();
+		}
 	}
 };
 

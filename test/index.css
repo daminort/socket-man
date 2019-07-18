@@ -33,19 +33,34 @@ button.red {
     background-color: #dc2a2f;
 }
 
+button.blue {
+    background-color: #1890ff;
+}
+
 .content {
     margin: 16px auto 16px auto;
     width: 70vw;
     color: inherit;
 }
 
-#headForm {
+.forms {
     display: flex;
     width: 100%;
+}
+
+#headForm,
+#emitForm {
+    display: flex;
+    width: 50%;
     align-items: stretch;
 }
 
-#headForm > span {
+#emitForm {
+    margin-left: 40px;
+}
+
+#headForm > span,
+#emitForm > span {
     display: flex;
     align-self: center;
     margin-right: 8px;
@@ -66,10 +81,17 @@ button.red {
     padding: 8px 16px;
     border: 1px rgba(0,0,0, 0.4) solid;
     border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s linear;
+}
+
+#history > .message.visible {
+    opacity: 1;
 }
 
 #history > .message > .text {
     width: 100%;
+    padding-right: 16px;
 }
 
 #history > .message > .stats {

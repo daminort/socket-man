@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import { POSITION } from '../../../constants/common';
 import { MESSAGE_TYPES } from '../../../constants/socket';
+import { capitalize } from '../../../helpers/lodash';
 
 import { StyledWrapper } from './Avatar.style';
 
@@ -24,6 +25,7 @@ const Avatar = ({ type, position }) => {
 			size={40}
 			icon={icons[type]}
 			className={className}
+			title={capitalize(type)}
 		/>
 	);
 };

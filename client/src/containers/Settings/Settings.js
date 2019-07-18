@@ -13,7 +13,7 @@ import { Wrapper } from './Settings.style';
 const Settings = (props) => {
 	const {
 		pingEnabled,
-		pingImitateUsers,
+		imitateUsers,
 		appParamsSet,
 		outcomingPingEnabled,
 		outcomingImitateUsers,
@@ -24,9 +24,9 @@ const Settings = (props) => {
 		outcomingPingEnabled(!pingEnabled);
 	};
 
-	const onChangePingImitate = () => {
-		appParamsSet({ pingImitateUsers: !pingImitateUsers });
-		outcomingImitateUsers(!pingImitateUsers);
+	const onChangeImitateUsers = () => {
+		appParamsSet({ imitateUsers: !imitateUsers });
+		outcomingImitateUsers(!imitateUsers);
 	};
 
 	return (
@@ -39,9 +39,9 @@ const Settings = (props) => {
 				Enable ping from socket server
 			</Checkbox>
 			<Checkbox
-				checked={pingImitateUsers}
+				checked={imitateUsers}
 				disabled={!pingEnabled}
-				onChange={onChangePingImitate}
+				onChange={onChangeImitateUsers}
 			>
 				Imitate users when ping from server
 			</Checkbox>
@@ -51,18 +51,18 @@ const Settings = (props) => {
 
 Settings.propTypes = {
 	pingEnabled           : PropTypes.bool.isRequired,
-	pingImitateUsers      : PropTypes.bool.isRequired,
+	imitateUsers          : PropTypes.bool.isRequired,
 	appParamsSet          : PropTypes.func.isRequired,
 	outcomingPingEnabled  : PropTypes.func.isRequired,
 	outcomingImitateUsers : PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {
-	const { pingEnabled, pingImitateUsers } = selectApp(state);
+	const { pingEnabled, imitateUsers } = selectApp(state);
 
 	return {
 		pingEnabled,
-		pingImitateUsers,
+		imitateUsers,
 	};
 };
 

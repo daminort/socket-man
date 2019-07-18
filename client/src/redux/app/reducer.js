@@ -7,9 +7,9 @@ import actions from './actions';
 
 const initState = Immutable.from({
   app: {
-    appStarted       : false,
-    pingEnabled      : false,
-    pingImitateUsers : false,
+    appStarted   : false,
+    pingEnabled  : false,
+    imitateUsers : false,
   },
   socket: {
     address        : '',
