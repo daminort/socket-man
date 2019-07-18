@@ -9,6 +9,7 @@ import Input, { TextArea, Password, Search, Group } from './Input';
 import Layout, { Header, Content, Footer, Sider } from './Layout';
 import Menu, { SubMenu, MenuItem } from './Menu';
 import Message from './Message';
+import Modal from './Modal';
 import Select, { Option } from './Select';
 import Tag from './Tag';
 import Typography, { Text, Paragraph, Title } from './Typography';
@@ -47,6 +48,7 @@ export {
 	MenuItem,
 
 	Message,
+	Modal,
 
 	Select,
 	Option,

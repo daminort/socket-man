@@ -208,19 +208,19 @@ class SocketService {
 	onGetServerSettings() {
 		const admin = this.getAdmin();
 		const settings = {
-			pingEnabled: Boolean(this.pingInterval),
-			imitateUsers: this.imitateUsers,
+			pingEnabled    : Boolean(this.pingInterval),
+			imitateUsers   : this.imitateUsers,
+			subscribeTypes : this.subscribeTypes,
 		};
 
 		admin.emit('action', actions.outcomingGetServerSettings(settings));
 	}
 
 	onSubscribeEvent(payload) {
-		const { subscribeTypes } = this;
 		const { type } = payload;
 
-		if (!subscribeTypes.includes(type)) {
-			subscribeTypes.push(type);
+		if (!this.subscribeTypes.includes(type)) {
+			this.subscribeTypes.push(type);
 			this.subscribeOnClientsEvents();
 		}
 	}

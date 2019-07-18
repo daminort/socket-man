@@ -62,7 +62,7 @@
     "func-names":"off",
     "no-param-reassign":"off",
     "object-property-newline":"warn",
-    
+
     "no-unused-vars":"warn",
     "object-shorthand":"warn",
     "comma-dangle":"warn",
@@ -124,7 +124,7 @@
     "react/jsx-filename-extension":"off",
     "react/prefer-stateless-function":"off",
     "react/jsx-indent":"off",
-    "react/jsx-indent-props":"warn",
+    "react/jsx-indent-props":"off",
     "react/jsx-one-expression-per-line":"off",
     "react/no-this-in-sfc":"warn",
     "react/forbid-prop-types":"warn",

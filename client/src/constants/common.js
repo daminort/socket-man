@@ -4,3 +4,7 @@ export const POSITION = Object.freeze({
 	top    : 'top',
 	bottom : 'bottom',
 });
+
+export const STORAGE_KEYS = Object.freeze({
+	queries: 'queries',
+});

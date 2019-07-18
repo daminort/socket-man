@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import emitterActions from '../../redux/emitter/actions';
 import socketActions from '../../redux/socket/actions';
-import { selectToolbar } from '../../redux/emitter/selectors';
+import queriesActions from '../../redux/queries/actions';
+import { selectToolbar, selectEventData } from '../../redux/emitter/selectors';
 
 import { validateEvent } from '../../helpers/validators/emitter';
 import { FeedbackUtils } from '../../helpers/utils/FeedbackUtils';
@@ -18,7 +19,7 @@ import Hint from './Hint';
 
 import { Wrapper } from './Emitter.style';
 
-const Emitter = ({ eventType, eventDataSet, emitEvent, subscribeOnEvent }) => {
+const Emitter = ({ eventType, eventData, eventDataSet, emitEvent, subscribeOnEvent, modalDataSet }) => {
 
 	const formRef = useRef({});
 
@@ -44,10 +45,20 @@ const Emitter = ({ eventType, eventDataSet, emitEvent, subscribeOnEvent }) => {
 		}, 500);
 	};
 
-	// TODO: saving current data as template
 	const onClickSave = () => {
 		const { eventData } = formRef.current.values;
-		console.log('Emitter.js, onClickSave [30]', { eventType, eventData });
+		const modal = {
+			type    : eventType,
+			body    : eventData,
+			name    : '',
+			visible : true,
+		};
+
+		modalDataSet(modal);
+	};
+
+	const onChangeBody = () => {
+		modalDataSet({ queryID: '' });
 	};
 
 	return (
@@ -55,7 +66,8 @@ const Emitter = ({ eventType, eventDataSet, emitEvent, subscribeOnEvent }) => {
 			<Title level={4}>Emit events</Title>
 			<Toolbar />
 			<Formik
-				initialValues={{ eventData: '' }}
+				enableReinitialize
+				initialValues={{ eventData }}
 				onSubmit={onSubmit}
 				render={({ isSubmitting, values }) => {
 					formRef.current.values = values;
@@ -68,6 +80,7 @@ const Emitter = ({ eventType, eventDataSet, emitEvent, subscribeOnEvent }) => {
 									<TextArea
 										noLabel
 										placeholder="Enter event data here"
+										onChangeValue={onChangeBody}
 										{...fieldProps}
 									/>
 								)}
@@ -103,15 +116,18 @@ const Emitter = ({ eventType, eventDataSet, emitEvent, subscribeOnEvent }) => {
 
 Emitter.propTypes = {
 	eventType        : PropTypes.string.isRequired,
+	eventData        : PropTypes.string.isRequired,
 	eventDataSet     : PropTypes.func.isRequired,
 	emitEvent        : PropTypes.func.isRequired,
 	subscribeOnEvent : PropTypes.func.isRequired,
+	modalDataSet     : PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {
 	const { eventType } = selectToolbar(state);
 	return {
 		eventType,
+		eventData: selectEventData(state),
 	};
 };
 
@@ -119,6 +135,7 @@ const mapActions = {
 	eventDataSet     : emitterActions.eventDataSet,
 	emitEvent        : socketActions.outcomingEmitEvent,
 	subscribeOnEvent : socketActions.outcomingSubscribeOnEvent,
+	modalDataSet     : queriesActions.modalDataSet,
 };
 
 export default connect(

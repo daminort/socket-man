@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
+import * as PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import queriesActions from '../../redux/queries/actions';
+import emitterActions from '../../redux/emitter/actions';
+import { selectQueries, selectModal } from '../../redux/queries/selectors';
 
 import { Sider, Menu, MenuItem, Icon } from '../../components/lib';
 import { Logo } from '../../components/ui';
 
-const items = [
-	{ id: '1', name: 'Create: New category and prices' },
-	{ id: '2', name: 'Update: Category' },
-	{ id: '3', name: 'Remove: User' },
-	{ id: '4', name: 'Notify: New Price' },
-	{ id: '5', name: 'Update: Prices' },
-];
+import { find } from '../../helpers/lodash';
 
-const Sidebar = () => {
+const Sidebar = (props) => {
+	const {
+		queryID,
+		queries,
+		modalDataSet,
+		toolbarParamsSet,
+		eventDataSet,
+	} = props;
 
 	const [collapsed, setCollapsed] = useState(false);
 
-	const menuItems = items.map(item => (
+	const onSelect = ({ key }) => {
+		const query = find(queries, { id: key });
+
+		toolbarParamsSet({ eventType: query.type });
+		eventDataSet(query.body);
+		modalDataSet({ queryID: key });
+	};
+
+	const noItems = !queries.length && (
+		<MenuItem key="0">
+			<Icon type="info-circle" />
+			<span>No saved queries</span>
+		</MenuItem>
+	);
+
+	const menuItems = queries.map(item => (
 		<MenuItem key={item.id}>
 			<Icon type="file" />
 			<span>{item.name}</span>
@@ -30,15 +52,48 @@ const Sidebar = () => {
 			onCollapse={() => setCollapsed(!collapsed)}
 		>
 			<Logo collapsed={collapsed} />
-			<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-				<MenuItem key="0">
-					<Icon type="plus" />
-					<span>Create new event</span>
-				</MenuItem>
+			<Menu
+				theme="dark"
+				mode="inline"
+				selectedKeys={[queryID]}
+				onSelect={onSelect}
+			>
+				{noItems}
 				{menuItems}
 			</Menu>
 		</Sider>
 	);
 };
 
-export default Sidebar;
+Sidebar.propTypes = {
+	queryID: PropTypes.string.isRequired,
+	queries: PropTypes.arrayOf(PropTypes.shape({
+		id   : PropTypes.string.isRequired,
+		name : PropTypes.string.isRequired,
+		type : PropTypes.string.isRequired,
+		body : PropTypes.string.isRequired,
+	})).isRequired,
+
+	modalDataSet     : PropTypes.func.isRequired,
+	toolbarParamsSet : PropTypes.func.isRequired,
+	eventDataSet     : PropTypes.func.isRequired,
+};
+
+const mapState = (state) => {
+	const { queryID } = selectModal(state);
+	return {
+		queryID,
+		queries: selectQueries(state),
+	};
+};
+
+const mapActions = {
+	modalDataSet     : queriesActions.modalDataSet,
+	toolbarParamsSet : emitterActions.toolbarParamsSet,
+	eventDataSet     : emitterActions.eventDataSet,
+};
+
+export default connect(
+	mapState,
+	mapActions
+)(Sidebar);

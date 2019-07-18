@@ -25,6 +25,9 @@ export default function emitterReducer(state = initState, { type, payload }) {
     case actions.EVENT_DATA_SET: {
       return Immutable.set(state, 'eventData', payload.eventData);
     }
+    case actions.EVENT_TYPES_SET: {
+      return Immutable.set(state, 'eventTypes', payload.eventTypes);
+    }
     case actions.EVENT_TYPE_ADD: {
       const result = compact(state.eventTypes.concat(payload.eventType));
       return Immutable.set(state, 'eventTypes', result);

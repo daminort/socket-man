@@ -3,10 +3,12 @@ import { all, takeLatest, takeEvery, put, select } from 'redux-saga/effects';
 import MessagesUtils from '../../helpers/utils/MessagesUtils';
 
 import { selectSocket } from '../app/selectors';
-import { selectEventTypes } from '../history/selectors';
+import { selectEventTypes as selectHistoryEventTypes } from '../history/selectors';
+import { selectEventTypes as selectEmitterEventTypes } from '../emitter/selectors';
 
 import appActions from '../app/actions';
 import historyActions from '../history/actions';
+import emitterActions from '../emitter/actions';
 import actions from './actions';
 
 // Inners -----------------------------------------------------------------------------------------
@@ -26,7 +28,7 @@ function* incomingEmitHistory({ payload }) {
   const message = MessagesUtils.createHistoryMessage(payload);
   const { type } = message;
 
-  const eventTypes = yield select(selectEventTypes);
+  const eventTypes = yield select(selectHistoryEventTypes);
   if (!eventTypes.includes(type)) {
     yield put(historyActions.eventTypeAdd(type));
   }
@@ -58,8 +60,14 @@ function* incomingUserConnected({ payload }) {
 
 function* incomingServerSettings({ payload }) {
   const { settings } = payload;
-  const { pingEnabled, imitateUsers } = settings;
+  const { pingEnabled, imitateUsers, subscribeTypes } = settings;
+
   yield put(appActions.appParamsSet({ pingEnabled, imitateUsers }));
+
+  const eventTypes = yield select(selectEmitterEventTypes);
+  const result = [...new Set([...eventTypes, ...subscribeTypes])];
+
+  yield put(emitterActions.eventTypesSet(result));
 }
 
 export default function* socketSaga() {

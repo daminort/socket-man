@@ -13,14 +13,15 @@ import { Sidebar } from '../../containers/Sidebar';
 import { HistoryContainer } from '../../containers/History';
 import { Settings } from '../../containers/Settings';
 import { Emitter } from '../../containers/Emitter';
+import { Query } from '../../modals';
 
 import { LeftWrapper } from './Root.style';
 
 class Root extends PureComponent {
 
 	static propTypes = {
-		appStarted: PropTypes.bool.isRequired,
-		appStart: PropTypes.func.isRequired,
+		appStarted : PropTypes.bool.isRequired,
+		appStart   : PropTypes.func.isRequired,
 	};
 
 	componentDidMount() {
@@ -52,6 +53,7 @@ class Root extends PureComponent {
 							</Col>
 						</Row>
 					</MainContent>
+					<Query />
 					<Footer />
 				</Layout>
 			</MainLayout>
