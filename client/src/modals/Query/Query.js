@@ -27,7 +27,6 @@ const Query = (props) => {
 
 	const formRef = useRef({});
 	const initValues = {
-		queryID,
 		type,
 		body,
 		name,
@@ -88,6 +87,7 @@ const Query = (props) => {
 									render={(fieldProps) => (
 										<Input
 											label="Name:"
+											labelWidth={15}
 											placeholder="Enter template name here"
 											{...fieldProps}
 										/>
@@ -97,18 +97,9 @@ const Query = (props) => {
 									name="type"
 									render={(fieldProps) => (
 										<Input
+											disabled
+											labelWidth={15}
 											label="Type:"
-											disabled
-											{...fieldProps}
-										/>
-									)}
-								/>
-								<Field
-									name="queryID"
-									render={(fieldProps) => (
-										<Input
-											label="ID:"
-											disabled
 											{...fieldProps}
 										/>
 									)}

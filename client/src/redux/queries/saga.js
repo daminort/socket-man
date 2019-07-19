@@ -4,6 +4,9 @@ import { all, takeLatest, put, select, call } from 'redux-saga/effects';
 import { findIndex } from '../../helpers/lodash';
 import { StorageUtils } from '../../helpers/utils/StorageUtils';
 
+import emitterActions from '../emitter/actions';
+import { selectEventTypes } from '../emitter/selectors';
+
 import actions from './actions';
 import { selectQueries } from './selectors';
 
@@ -45,6 +48,17 @@ function* queriesRestore() {
   const queries = yield call(StorageUtils.restoreQueries);
   yield put(actions.queriesSet(queries));
   yield put(actions.modalDataSet({ queryID: '' }));
+
+  // add custom event's types to emitter's types list
+  const eventTypes = yield select(selectEventTypes);
+  const queriesTypes = queries
+    .map(query => query.type)
+    .filter(type => !eventTypes.includes(type));
+
+  if (queriesTypes.length) {
+    const result = [...new Set([...eventTypes, ...queriesTypes])];
+    yield put(emitterActions.eventTypesSet(result));
+  }
 }
 
 export default function* appSaga() {

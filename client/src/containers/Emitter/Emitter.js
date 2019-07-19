@@ -7,10 +7,12 @@ import emitterActions from '../../redux/emitter/actions';
 import socketActions from '../../redux/socket/actions';
 import queriesActions from '../../redux/queries/actions';
 import { selectToolbar, selectEventData } from '../../redux/emitter/selectors';
+import { selectModal, selectQuery } from '../../redux/queries/selectors';
 
 import { validateEvent } from '../../helpers/validators/emitter';
 import { FeedbackUtils } from '../../helpers/utils/FeedbackUtils';
 import { TransformsUtils } from '../../helpers/utils/TransformsUtils';
+import { validateQuery } from '../../helpers/validators/query';
 
 import { Title, Button } from '../../components/lib';
 import { TextArea } from '../../components/forms';
@@ -19,7 +21,19 @@ import Hint from './Hint';
 
 import { Wrapper } from './Emitter.style';
 
-const Emitter = ({ eventType, eventData, eventDataSet, emitEvent, subscribeOnEvent, modalDataSet }) => {
+const Emitter = (props) => {
+	const {
+		eventType,
+		eventData,
+		queryID,
+		queryName,
+		eventDataSet,
+		toolbarParamsSet,
+		emitEvent,
+		subscribeOnEvent,
+		modalDataSet,
+		querySave,
+	} = props;
 
 	const formRef = useRef({});
 
@@ -45,9 +59,10 @@ const Emitter = ({ eventType, eventData, eventDataSet, emitEvent, subscribeOnEve
 		}, 500);
 	};
 
-	const onClickSave = () => {
+	const onClickSaveAs = () => {
 		const { eventData } = formRef.current.values;
 		const modal = {
+			queryID : '',
 			type    : eventType,
 			body    : eventData,
 			name    : '',
@@ -57,7 +72,33 @@ const Emitter = ({ eventType, eventData, eventDataSet, emitEvent, subscribeOnEve
 		modalDataSet(modal);
 	};
 
-	const onChangeBody = () => {
+	const onClickSave = () => {
+		if (!queryID) {
+			onClickSaveAs();
+			return;
+		}
+
+		const { eventData } = formRef.current.values;
+		const query = {
+			type : eventType,
+			body : eventData,
+			name : queryName,
+			id   : queryID,
+		};
+
+		const errors = validateQuery(query);
+		if (errors) {
+			FeedbackUtils.showMessageError(errors);
+			return;
+		}
+
+		querySave(query);
+	};
+
+
+	const onClickNew = () => {
+		eventDataSet('');
+		toolbarParamsSet({ eventType: '' });
 		modalDataSet({ queryID: '' });
 	};
 
@@ -80,31 +121,56 @@ const Emitter = ({ eventType, eventData, eventDataSet, emitEvent, subscribeOnEve
 									<TextArea
 										noLabel
 										placeholder="Enter event data here"
-										onChangeValue={onChangeBody}
 										{...fieldProps}
 									/>
 								)}
 							/>
 							<Hint />
 							<div className="buttons">
-								<Button
-									htmlType="button"
-									icon="save"
-									title="Save current event as template"
-									disabled={isSubmitting}
-									onClick={onClickSave}
-								>
-									Save
-								</Button>
-								<Button
-									type="primary"
-									htmlType="submit"
-									icon="cloud-upload"
-									title="Emit event to socket server"
-									disabled={isSubmitting}
-								>
-									Send
-								</Button>
+								<div className="left">
+									{queryID && (
+										<Button
+											htmlType="button"
+											icon="plus"
+											title="Create new empty event"
+											disabled={isSubmitting}
+											onClick={onClickNew}
+										>
+											New
+										</Button>
+									)}
+									<Button
+										htmlType="button"
+										icon="save"
+										title="Save current event as template"
+										disabled={isSubmitting}
+										onClick={onClickSave}
+									>
+										Save
+									</Button>
+									{queryID && (
+										<Button
+											htmlType="button"
+											icon="save"
+											title="Save current template as new one"
+											disabled={isSubmitting}
+											onClick={onClickSaveAs}
+										>
+											Save as...
+										</Button>
+									)}
+								</div>
+								<div className="right">
+									<Button
+										type="primary"
+										htmlType="submit"
+										icon="cloud-upload"
+										title="Emit event to socket server"
+										disabled={isSubmitting}
+									>
+										Send
+									</Button>
+								</div>
 							</div>
 						</Form>
 					);
@@ -117,25 +183,35 @@ const Emitter = ({ eventType, eventData, eventDataSet, emitEvent, subscribeOnEve
 Emitter.propTypes = {
 	eventType        : PropTypes.string.isRequired,
 	eventData        : PropTypes.string.isRequired,
+	queryID          : PropTypes.string.isRequired,
+	queryName        : PropTypes.string.isRequired,
 	eventDataSet     : PropTypes.func.isRequired,
+	toolbarParamsSet : PropTypes.func.isRequired,
 	emitEvent        : PropTypes.func.isRequired,
 	subscribeOnEvent : PropTypes.func.isRequired,
 	modalDataSet     : PropTypes.func.isRequired,
+	querySave        : PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {
 	const { eventType } = selectToolbar(state);
+	const { queryID } = selectModal(state);
+
 	return {
 		eventType,
+		queryID,
+		queryName: selectQuery(queryID, {}).name,
 		eventData: selectEventData(state),
 	};
 };
 
 const mapActions = {
 	eventDataSet     : emitterActions.eventDataSet,
+	toolbarParamsSet : emitterActions.toolbarParamsSet,
 	emitEvent        : socketActions.outcomingEmitEvent,
 	subscribeOnEvent : socketActions.outcomingSubscribeOnEvent,
 	modalDataSet     : queriesActions.modalDataSet,
+	querySave        : queriesActions.querySave,
 };
 
 export default connect(

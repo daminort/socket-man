@@ -6,10 +6,14 @@ import queriesActions from '../../redux/queries/actions';
 import emitterActions from '../../redux/emitter/actions';
 import { selectQueries, selectModal } from '../../redux/queries/selectors';
 
-import { Sider, Menu, MenuItem, Icon } from '../../components/lib';
+import { Sider, Menu, MenuItem } from '../../components/lib';
 import { Logo } from '../../components/ui';
 
 import { find } from '../../helpers/lodash';
+import { ItemContent } from './ItemContent';
+
+import { Wrapper } from './Sidebar.style';
+import { queryProps } from './propTypes';
 
 const Sidebar = (props) => {
 	const {
@@ -23,6 +27,9 @@ const Sidebar = (props) => {
 	const [collapsed, setCollapsed] = useState(false);
 
 	const onSelect = ({ key }) => {
+		if (key === '0') {
+			return;
+		}
 		const query = find(queries, { id: key });
 
 		toolbarParamsSet({ eventType: query.type });
@@ -32,15 +39,23 @@ const Sidebar = (props) => {
 
 	const noItems = !queries.length && (
 		<MenuItem key="0">
-			<Icon type="info-circle" />
-			<span>No saved queries</span>
+			<ItemContent
+				id="0"
+				name="No saved queries"
+				icon="info-circle"
+				collapsed={collapsed}
+			/>
 		</MenuItem>
 	);
 
 	const menuItems = queries.map(item => (
 		<MenuItem key={item.id}>
-			<Icon type="file" />
-			<span>{item.name}</span>
+			<ItemContent
+				id={item.id}
+				name={item.name}
+				type={item.type}
+				collapsed={collapsed}
+			/>
 		</MenuItem>
 	));
 
@@ -51,28 +66,25 @@ const Sidebar = (props) => {
 			collapsed={collapsed}
 			onCollapse={() => setCollapsed(!collapsed)}
 		>
-			<Logo collapsed={collapsed} />
-			<Menu
-				theme="dark"
-				mode="inline"
-				selectedKeys={[queryID]}
-				onSelect={onSelect}
-			>
-				{noItems}
-				{menuItems}
-			</Menu>
+			<Wrapper>
+				<Logo collapsed={collapsed} />
+				<Menu
+					theme="dark"
+					mode="inline"
+					selectedKeys={[queryID]}
+					onSelect={onSelect}
+				>
+					{noItems}
+					{menuItems}
+				</Menu>
+			</Wrapper>
 		</Sider>
 	);
 };
 
 Sidebar.propTypes = {
 	queryID: PropTypes.string.isRequired,
-	queries: PropTypes.arrayOf(PropTypes.shape({
-		id   : PropTypes.string.isRequired,
-		name : PropTypes.string.isRequired,
-		type : PropTypes.string.isRequired,
-		body : PropTypes.string.isRequired,
-	})).isRequired,
+	queries: PropTypes.arrayOf(queryProps).isRequired,
 
 	modalDataSet     : PropTypes.func.isRequired,
 	toolbarParamsSet : PropTypes.func.isRequired,

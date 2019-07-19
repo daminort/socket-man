@@ -13,5 +13,16 @@ export const Wrapper = styled(Footer)`
   	background-color: ${bg.footer};
   	padding: 0 16px;
   	font-size: 12px;
+  	
+  	span {
+  		margin-right: 8px;
+  	}
+  	a {
+  		margin-right: 24px;
+  		
+  		.anticon-github {
+  			font-size: 16px;
+  		}
+  	}
   }
 `;

@@ -24,9 +24,7 @@ export const THEME = Object.freeze({
 		main: '#1d1d1d',
 		hint: '#767676',
 		inverted: '#ffffff',
-	},
-	color: {
-
+		sidebarType: '#00ab00',
 	},
 	border: {
 		history: '#d9d9d9',

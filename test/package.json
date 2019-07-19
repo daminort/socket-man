@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "Test page",
   "scripts": {
-    "start": "PORT=9712 serve"
+    "start": "PORT=9712 npx serve"
   },
   "author": "Demien",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^11.1.0"
+  }
 }

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 
 import emitterActions from '../../../redux/emitter/actions';
-import queriesActions from '../../../redux/queries/actions';
 import { selectEventTypesList, selectToolbar } from '../../../redux/emitter/selectors';
 
 import { Button } from '../../../components/lib';
@@ -13,7 +12,7 @@ import { Input, Select } from '../../../components/forms';
 
 import { Wrapper } from './Toolbar.style';
 
-const Toolbar = ({ eventType, eventTypes, toolbarParamsSet, eventTypeAdd, modalDataSet }) => {
+const Toolbar = ({ eventType, eventTypes, toolbarParamsSet, eventTypeAdd }) => {
 
 	const [formVisible, setFormVisible] = useState(false);
 
@@ -23,7 +22,6 @@ const Toolbar = ({ eventType, eventTypes, toolbarParamsSet, eventTypeAdd, modalD
 		eventTypeAdd(newEventType);
 		setFormVisible(false);
 		toolbarParamsSet({ eventType: newEventType });
-		modalDataSet({ queryID: '' });
 
 		actions.setSubmitting(false);
 	};
@@ -31,7 +29,6 @@ const Toolbar = ({ eventType, eventTypes, toolbarParamsSet, eventTypeAdd, modalD
 	const onChangeEventType = (event) => {
 		const { target: { value } } = event;
 		toolbarParamsSet({ eventType: value });
-		modalDataSet({ queryID: '' });
 	};
 
 	const btnClass = classnames({
@@ -100,7 +97,6 @@ Toolbar.propTypes = {
 
 	eventTypeAdd     : PropTypes.func.isRequired,
 	toolbarParamsSet : PropTypes.func.isRequired,
-	modalDataSet     : PropTypes.func.isRequired,
 };
 
 Toolbar.defaultProps = {
@@ -119,7 +115,6 @@ const mapState = (state) => {
 const mapActions = {
 	eventTypeAdd     : emitterActions.eventTypeAdd,
 	toolbarParamsSet : emitterActions.toolbarParamsSet,
-	modalDataSet     : queriesActions.modalDataSet,
 };
 
 export default connect(
