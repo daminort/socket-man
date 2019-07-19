@@ -9,7 +9,7 @@ const Footer = () => {
 			<span>(c) 2019</span>
 			<a href="https://github.com/daminort" target="_blank" rel="noopener noreferrer">Demien</a>
 			<span>Project source:</span>
-			<a href="https://github.com/daminort/react-dev-roadmap-editor" target="_blank" rel="noopener noreferrer">
+			<a href="https://github.com/daminort/socket-man" target="_blank" rel="noopener noreferrer">
 				<Icon type="github" />
 			</a>
 		</Wrapper>
