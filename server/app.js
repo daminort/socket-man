@@ -41,13 +41,6 @@ io.on('connect', (socket) => {
 http.listen(port);
 
 log('Socket server has been started:', 'green', { noDate: true });
-log(`  -- Local:   https://localhost:${port}`, 'cyan', { noDate: true });
-log(`  -- Network: https://${localURL}:${port}`, 'cyan', { noDate: true });
+log(`  -- Local:   http://localhost:${port}`, 'cyan', { noDate: true });
+log(`  -- Network: http://${localURL}:${port}`, 'cyan', { noDate: true });
 log();
-
-// app.listen(port, () => {
-// 	log('Socket server has been started:', 'green', { noDate: true });
-// 	log(`  -- Local:   https://localhost:${port}`, 'cyan', { noDate: true });
-// 	log(`  -- Network: https://${localURL}:${port}`, 'cyan', { noDate: true });
-// 	log();
-// });

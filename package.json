@@ -18,5 +18,10 @@
     "url": "https://github.com/daminort/socket-man/issues"
   },
   "homepage": "https://github.com/daminort/socket-man#readme",
+  "scripts": {
+    "docker-build": "docker build -t daminort/socket-man .",
+    "docker-push": "docker push daminort/socket-man",
+    "compose-up": "docker-compose up --build"
+  },
   "devDependencies": {}
 }
