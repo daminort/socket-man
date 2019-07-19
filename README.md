@@ -5,8 +5,8 @@ A tool for simple testing your socket client via using simple Socket.io server
 
 ### Why
 Let's assume we develop a front-end application that uses socket connections.
-But at the moment we don't have access to server or can't emit events from it to client.
-So, how can we imitate incoming socket events for testing purposes?
+But at the moment we don't have access to server or can't emit events from it to client.<br>
+So, how can we imitate incoming socket events for testing purposes?<br>
 This is why given tool was created.
 
 ### Features
@@ -67,3 +67,8 @@ $ npm start
 > 
 > For changing client port you need to edit script `start` in `package.json`:<br>
 > `"start": "PORT=9711 react-scripts start"`
+
+### License
+<a name="license"></a>
+
+[MIT](/LICENSE) © [Daminort](https://github.com/daminort)
