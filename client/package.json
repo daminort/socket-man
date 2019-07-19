@@ -17,7 +17,6 @@
   "bugs": {
     "url": "https://github.com/daminort/socket-man/issues"
   },
-  "homepage": "https://github.com/daminort/socket-man#readme",
   "scripts": {
     "start": "PORT=9711 react-scripts start",
     "build": "react-scripts build",

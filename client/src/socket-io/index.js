@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import { socketConnectionString, adminHash } from '../config';
 
 const options = {
+	transports: ['websocket'],
 	query: { adminHash },
 };
 

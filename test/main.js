@@ -130,6 +130,7 @@ function onClickConnect(event) {
 	}
 
 	const options = {
+		transports: ['websocket'],
 		query: elements.queryParams.value,
 	}
 
