@@ -1,7 +1,11 @@
 ## Socket-Man
 A tool for simple testing your socket client via using simple Socket.io server
 
-### Half-live Demo
+### Screenshots
+There are screenshots of main page of **Socket-Man** and special test page which was used
+during development:<br><br>
+![Socket-man](images/socket-man.png)<br><br>
+![Socket-man](images/test-page.png)<br>
 
 ### Why
 Let's assume we develop a front-end application that uses socket connections.
