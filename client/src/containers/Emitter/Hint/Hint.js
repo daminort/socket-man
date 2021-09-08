@@ -1,10 +1,13 @@
 import React from 'react';
+
+import { Alert } from '../../../components/lib';
+
 import { Wrapper } from './Hint.style';
 
 const Hint = () => {
 	return (
 		<Wrapper>
-			Hint: you can emit event with empty body to subscribe on that type of events
+			<Alert message="Hint: you should emit event with empty body to subscribe on that type of events" type="warning" showIcon />
 		</Wrapper>
 	);
 };
